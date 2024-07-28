@@ -1,0 +1,16 @@
+[package]
+name = "portable"
+version = "0.1.0"
+edition = "2021"
+authors = [ "andofwinds <andrey@elib.ru>" ]
+description = "A minimal and portable low-level x86 IO port handling library"
+license-file = "LICENSE"
+readme = "README.md"
+keywords = [
+	"osdev",
+	"x86_64",
+	"port",
+	"low-level",
+	"no_std"
+]
+repository = "https://github.com/andofwinds/portable/"

@@ -1,8 +1,9 @@
 #![doc = include_str!("../README.md")]
 #![no_std]
 
-use core::arch::asm;
+use core::{arch::asm, fmt::Display};
 
+#[derive(Clone, Copy, Eq, Debug)]
 /// An x86 IO port
 pub struct Port {
     /// An x86 IO port address
@@ -24,6 +25,23 @@ impl Port {
     /// Writes a T-sized `value` to port.
     pub fn write<T: PortRw>(&self, value: T) {
         T::write(self.addr, value);
+    }
+}
+impl PartialEq for Port {
+    fn eq(&self, other: &Self) -> bool {
+        self.addr == other.addr
+    }
+}
+impl Display for Port {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{}", self.addr)
+    }
+}
+impl Default for Port {
+    fn default() -> Self {
+        Self {
+            addr: 0,
+        }
     }
 }
 

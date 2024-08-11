@@ -5,43 +5,45 @@ use core::{arch::asm, fmt::Display};
 
 #[derive(Clone, Copy, Eq, Debug)]
 /// An x86 IO port
-pub struct Port {
-    /// An x86 IO port address
-    addr: u16,
-}
+pub struct Port (u16);
 impl Port {
     /// Creates a new port instance with given address.
     pub fn new(addr: u16) -> Self {
-        Self {
-            addr,
-        }
+        Self (addr)
     }
 
     /// Reads a T-sized value from port.
     pub fn read<T: PortRw>(&self) -> T {
-        T::read(self.addr)
+        T::read(self.0)
     }
 
-    /// Writes a T-sized `value` to port.
-    pub fn write<T: PortRw>(&self, value: T) {
-        T::write(self.addr, value);
+    /// Reads a T-sized value from port to given buffer and returns `Self`.
+    pub fn read_to<T: PortRw>(&self, buf: &mut T) -> &Self {
+        *buf = T::read(self.0);
+
+        self
+    }
+
+    /// Writes a T-sized `value` to port and returns `Self`.
+    pub fn write<T: PortRw>(&self, value: T) -> &Self {
+        T::write(self.0, value);
+
+        self
     }
 }
 impl PartialEq for Port {
     fn eq(&self, other: &Self) -> bool {
-        self.addr == other.addr
+        self.0 == other.0
     }
 }
 impl Display for Port {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{}", self.addr)
+        write!(f, "{}", self.0)
     }
 }
 impl Default for Port {
     fn default() -> Self {
-        Self {
-            addr: 0,
-        }
+        Self (0)
     }
 }
 

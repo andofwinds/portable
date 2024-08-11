@@ -17,7 +17,7 @@ impl Port {
         }
     }
 
-    /// Reads a T bytes from port.
+    /// Reads a T-sized value from port.
     pub fn read<T: PortRw>(&self) -> T {
         T::read(self.addr)
     }
